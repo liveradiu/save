@@ -1,0 +1,101 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ertu Player</title>
+    <meta name="description" content="azure, azure media services, azure media player, features, demo, amp, embed, media player, media services, ams">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://amp.azure.net/libs/amp/latest/skins/amp-default/azuremediaplayer.min.css" rel="stylesheet">
+    <script src="https://amp.azure.net/libs/amp/latest/azuremediaplayer.min.js"></script>
+    <style>
+        html {
+            height: 200px;
+        }
+
+        body {
+            overflow: hidden;
+            height: 150px;
+            margin: 0px;
+        }
+    </style>
+    <script type="text/javascript">
+        var appInsights = window.appInsights || function (config) {
+            function i(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = "AuthenticatedUserContext", h = "start", c = "stop", l = "Track", a = l + "Event", v = l + "Page", y = u.createElement(o), r, f; y.src = config.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js"; u.getElementsByTagName(o)[0].parentNode.appendChild(y); try { t.cookie = u.cookie } catch (p) { } for (t.queue = [], t.version = "1.0", r = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"]; r.length;) i("track" + r.pop()); return i("set" + s), i("clear" + s), i(h + a), i(c + a), i(h + v), i(c + v), i("flush"), config.disableExceptionTracking || (r = "onerror", i("_" + r), f = e[r], e[r] = function (config, i, u, e, o) { var s = f && f(config, i, u, e, o); return s !== !0 && t["_" + r](config, i, u, e, o), s }), t
+        }({
+            instrumentationKey: "f3fff916-6a93-4239-ad61-a890fd12bbba"
+        });
+
+        window.appInsights = appInsights;
+        appInsights.trackPageView();
+    </script>
+    <!--Useful Libraries-->
+    <script src="https://www.maspero.eg/player/LivePlayer/modernizr-2.7.1.min.js"></script>
+    <script src="https://www.maspero.eg/player/LivePlayer/jquery-1.11.2.min.js"></script>
+    <!--Determine what version of AMP to Load-->
+    <script>
+        //Query String Parser
+        var queryString = function () { for (var e = {}, r = window.location.search.substring(1), i = r.split("&"), n = 0; n < i.length; n++) { var t = i[n].split(/=(.*)/); if ("undefined" == typeof e[t[0]]) e[t[0]] = t[1]; else if ("string" == typeof e[t[0]]) { var s = [e[t[0]], t[1]]; e[t[0]] = s } else e[t[0]].push(t[1]) } return e }();
+
+
+        var ampVersion = queryString.version || "2.1.2";
+        var theme = (queryString.theme) ? queryString.theme.toLowerCase() : "amp-default";
+
+        var ampUrl = "https://www.maspero.eg/player/LivePlayer/azuremediaplayer.min.js";
+        
+        var skinUrl = (theme == "stream") ? "https://www.maspero.eg/player/LivePlayer/player-skin.css" + "?v=2" : ((theme == "amp-flush") ? "https://www.maspero.eg/player/LivePlayer/azuremediaplayerFlush.min.css" : "https://www.maspero.eg/player/LivePlayer/azuremediaplayerDefault.min.css");
+        var pluginCollectDataUrl = "https://www.maspero.eg/player/LivePlayer/amp_analytics_collectDataV2.js";
+        var pluginSendAIUrl = "https://www.maspero.eg/player/LivePlayer/amp_analytics_sendAI.js";
+        var pluginGAUrl = "https://www.maspero.eg/player/LivePlayer/amp-ga.js";
+        var pluginStreamUrl = "https://www.maspero.eg/player/LivePlayer/player-skin.js" + "?v=2";
+
+        //Load Theme Skin
+        $("<link/>", {
+            rel: "stylesheet",
+            type: "text/css",
+            href: skinUrl
+        }).appendTo("head");
+
+        //Load AMP + Plugins
+        var scriptsLoaded = false;
+
+        $.getScript(ampUrl).then(function () {
+            $.getScript(pluginCollectDataUrl).then(function () {
+                $.getScript(pluginSendAIUrl).then(function () {
+                    $.getScript(pluginGAUrl).then(function () {
+                        if (theme == "stream") {
+                            $.getScript(pluginStreamUrl).then(function () {
+                                scriptsLoaded = true;
+                            });
+                        } else {
+                            scriptsLoaded = true;
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <!--<video id="azuremediaplayer" class="azuremediaplayer amp-big-play-centered" controls width="100%" height="100%" style="margin:0px;padding:0px">
+        <p class="amp-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video</p>
+    </video>-->
+    <script>
+        var skinClass;
+        switch (window.theme) {
+            case "amp-flush":
+                skinClass = "amp-flush-skin";
+                break;
+            case "stream":
+                skinClass = "amp-stream-skin";
+                break;
+            default:
+                skinClass = "amp-default-skin";
+        }
+        $("body").append('<video id="azuremediaplayer" class="azuremediaplayer amp-big-play-centered ' + skinClass + '" width="100%" height="100%" style="margin:0px;padding:0px;overflow:hidden" tabindex=0><p class="amp-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video</p></video>');
+    </script>
+    <script src="Channel-main-amp.js"></script>
+</body>
+</html>
